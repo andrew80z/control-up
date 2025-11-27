@@ -12,27 +12,42 @@ export default defineConfig({
     baseURL: BaseUrls.SAUCEDEMO,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    viewport: null,
-    launchOptions: {
-      args: ['--start-maximized']
-    }
+    viewport: null
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--start-maximized']
+        }
+      },
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        ...devices['Desktop Firefox'],
+        launchOptions: {
+          args: ['--start-maximized']
+        }
+      },
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { 
+        ...devices['Desktop Safari']
+        // WebKit doesn't support --start-maximized
+      },
     },
     {
       name: 'edge',
-      use: { ...devices['Desktop Edge'] },
+      use: { 
+        ...devices['Desktop Edge'],
+        launchOptions: {
+          args: ['--start-maximized']
+        }
+      },
     },
   ],
 });
