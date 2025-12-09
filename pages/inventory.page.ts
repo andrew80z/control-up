@@ -14,7 +14,7 @@ export class InventoryPage extends BasePage {
     super(page, '/inventory.html');
     this.inventoryItems = page.locator('.inventory_item');
     this.shoppingCartBadge = page.locator('.shopping_cart_badge');
-    this.addToCartButtons = page.locator('button:has-text("Add to cart")');
+    this.addToCartButtons = page.locator('[class="pricebar"] button');
   }
 
   /**
@@ -40,8 +40,16 @@ export class InventoryPage extends BasePage {
   /**
    * Add first inventory item to cart
    */
-  async addFirstItemToCart(): Promise<void> {
-    const firstAddButton = this.addToCartButtons.first();
-    await this.clickElement(firstAddButton);
+  async additemToCart(itemAmount: number): Promise<void> {
+    const possibleItemsAmount = (await this.addToCartButtons.all()).length;
+    console.log(`Avaliable amount: ${possibleItemsAmount}`);
+    if (itemAmount > possibleItemsAmount) {
+      throw new Error(`Given amount (${itemAmount}) exceeds avaliable on page amount (${possibleItemsAmount})`);
+    } else {
+      for (let i = 0; i < itemAmount; i++) {
+        const firstAddButton = this.addToCartButtons.nth(i);
+        await this.clickElement(firstAddButton);
+      }
+    }
   }
 }
